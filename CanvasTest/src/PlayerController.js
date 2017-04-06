@@ -39,6 +39,7 @@ function MoveRight(){
 }
 
 function CheckEnemyPos(){
+
     var playerBox = stageObj.stage.getChildByName('userObj').getBounds();
     for(var i in enemyController.enemyList){
         if(enemyController.enemyList[i].getBounds().intersects(playerBox)){

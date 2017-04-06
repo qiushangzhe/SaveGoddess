@@ -13,6 +13,15 @@ document.onkeydown = function(e){
     }else if(e.keyCode == 39){
         playerController.MoveRight();
     }else if(e.keyCode == 32){
-        enemyController.AddShape();
+        for(var i = 0 ; i<10;i++){
+            enemyController.AddShape();
+        }
     }
 };
+
+
+setInterval(function(){
+    console.log(1);
+    enemyController.MoveToPlayer();
+    shapeObj.stage.update();
+},1000);

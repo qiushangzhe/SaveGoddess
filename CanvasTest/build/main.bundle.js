@@ -59,9 +59,18 @@
 	    }else if(e.keyCode == 39){
 	        playerController.MoveRight();
 	    }else if(e.keyCode == 32){
-	        enemyController.AddShape();
+	        for(var i = 0 ; i<10;i++){
+	            enemyController.AddShape();
+	        }
 	    }
 	};
+
+
+	setInterval(function(){
+	    console.log(1);
+	    enemyController.MoveToPlayer();
+	    shapeObj.stage.update();
+	},1000);
 
 
 /***/ },
@@ -109,6 +118,7 @@
 	}
 
 	function CheckEnemyPos(){
+
 	    var playerBox = stageObj.stage.getChildByName('userObj').getBounds();
 	    for(var i in enemyController.enemyList){
 	        if(enemyController.enemyList[i].getBounds().intersects(playerBox)){
@@ -181,13 +191,14 @@
 
 	var config = __webpack_require__(2);
 	var shapeObj = __webpack_require__(3);
+	var stageObj = __webpack_require__(3);
 	var enemyList = [];
 
 	module.exports.AddShape = function (){
 	    // 5-495
 	    console.log(1);
-	    var x = Math.random()*config.stageInfo.width - config.gameInfo.obj_size/2;
-	    var y = Math.random()*config.stageInfo.width - config.gameInfo.obj_size/2;
+	    var x = parseInt(Math.random()*config.stageInfo.width - config.gameInfo.obj_size/2);
+	    var y = parseInt(Math.random()*config.stageInfo.width - config.gameInfo.obj_size/2);
 	    var graphics = new createjs.Graphics().beginFill("#ff0000").drawRect(0,0,config.gameInfo.obj_size,config.gameInfo.obj_size);
 	    var shape = new createjs.Shape(graphics);
 	    shape.x = x;
@@ -198,6 +209,39 @@
 	    shapeObj.stage.update();
 	}
 
+	module.exports.MoveToPlayer = function(){
+	    var obj = stageObj.stage.getChildByName('userObj');
+	    for(var i in enemyList){
+	        check(enemyList[i],obj);
+	    }
+	}
+
+	function check(enemy,player){
+	    var delta = 5;
+	    if(enemy.x < player.x){
+	        var buffer = enemy.x + delta;
+	        move(enemy,buffer,enemy.y);
+	    }
+	    if(enemy.x > player.x){
+	        var buffer = enemy.x - delta;
+	        move(enemy,buffer,enemy.y);
+	    }
+	    if(enemy.y < player.y){
+	        var buffer = enemy.y + delta;
+	        move(enemy,enemy.x,buffer);
+	    }
+	    if(enemy.y > player.y){
+	        var buffer = enemy.y - delta;
+	        move(enemy,enemy.x,buffer);
+	    }
+	}
+
+
+	function move(enemy,x,y){
+	    enemy.x = x;
+	    enemy.y = y;
+	    enemy.setBounds(x,y,config.gameInfo.obj_size,config.gameInfo.obj_size);
+	}
 	module.exports.enemyList = enemyList;
 
 
