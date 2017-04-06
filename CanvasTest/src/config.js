@@ -1,6 +1,6 @@
 var gameInfo = {
     obj_size : 10,
-    move_delta : 5
+    move_delta : 10
 }
 
 var stageInfo = {
